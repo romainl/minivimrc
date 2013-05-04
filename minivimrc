@@ -1,0 +1,13 @@
+filetype plugin indent on
+syntax on
+silent! runtime macros/matchit.vim
+set nocompatible
+set backspace=indent,eol,start
+set hidden
+set incsearch
+set laststatus=2
+set ruler
+set switchbuf=useopen,usetab
+set tags=./tags;/,tags;/
+set wildmenu
+nnoremap gb :buffers<CR>:sb<Space>
