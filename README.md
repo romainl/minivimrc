@@ -5,10 +5,10 @@ minivimrc
 
 It contains only what *I* consider to be the most basic settings *I* need in order to make Vim comfortable. The whole thing could be condensed in a one liner, probably, but it’s clearer that way.
 
+    set nocompatible                   " not strictly necessary but useful in some scenarii
     filetype plugin indent on          " filetype detection and settings
     syntax on                          " syntax highlighting
-    silent! runtime macros/matchit.vim " matchit comes with Vim
-    set nocompatible                   " not strictly necessary but useful in some scenarii
+    runtime macros/matchit.vim         " matchit comes with Vim
     set backspace=indent,eol,start     " let the backspace key work "normally"
     set hidden                         " hide unsaved buffers
     set incsearch                      " incremental search rules
