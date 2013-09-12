@@ -1,17 +1,25 @@
+set nocompatible
+
 filetype plugin indent on
 syntax on
-silent! runtime macros/matchit.vim
+
+runtime macros/matchit.vim
+
 set backspace=indent,eol,start
 set foldmethod=manual
 set hidden
 set incsearch
 set laststatus=2
-set nocompatible
 set ruler
 set switchbuf=useopen,usetab
-set tags=./tags;/,tags;/
-set wildmenu
+set tags=./tags;,tags;
 set wildcharm=<C-z>
-nnoremap !e :edit **/*<C-z>
-nnoremap !b :buffer <C-z>
-nnoremap !t :tag /
+set wildmenu
+
+nnoremap ,e :edit <C-z>
+nnoremap ,b :buffer <C-z>
+nnoremap ,t :tag /
+nnoremap ,p :ptag /
+nnoremap ,j :ijump /
+nnoremap ,r :'{,'}s/<C-r>=expand('<cword>')<CR>/
+nnoremap ,R :%s/<C-r>=expand('<cword>')<CR>/
