@@ -1,25 +1,63 @@
+""""""""""""""""
+" MY MINIVIMRC "
+""""""""""""""""
+
+" because -u /path/to/minivimrc
 set nocompatible
 
+" filetype support
 filetype plugin indent on
 syntax on
 
+" because % is addictive
 runtime macros/matchit.vim
 
+" various settings
 set backspace=indent,eol,start
-set foldmethod=manual
+set foldmethod=indent
 set hidden
 set incsearch
 set laststatus=2
 set ruler
-set switchbuf=useopen,usetab
 set tags=./tags;,tags;
 set wildcharm=<C-z>
 set wildmenu
+set path=.,**
+set suffixesadd=.php,.html,.js,.css,.py,.sh
 
-nnoremap ,e :edit <C-z>
+" opening files
+nnoremap ,f :find<Space>
+nnoremap ,s :sfind<Space>
+nnoremap ,v :vert sfind<Space>
+
+" switching buffers
 nnoremap ,b :buffer <C-z>
-nnoremap ,t :tag /
-nnoremap ,p :ptag /
-nnoremap ,j :ijump /
-nnoremap ,r :'{,'}s/<C-r>=expand('<cword>')<CR>/
-nnoremap ,R :%s/<C-r>=expand('<cword>')<CR>/
+nnoremap <PageUp>   :bp<CR>
+nnoremap <PageDown> :bn<CR>
+
+" tag jumping
+nnoremap ,t :tjump /
+nnoremap ,p :ptjump /
+nnoremap ,$ :tjump /<c-r>=expand('<cword>')<CR><CR>
+nnoremap ,* :ptjump /<c-r>=expand('<cword>')<CR><CR>
+
+" super quick search and replace
+nnoremap ,r :'{,'}s/\<<C-r>=expand('<cword>')<CR>\>/
+nnoremap ,R :%s/\<<C-r>=expand('<cword>')<CR>\>/
+
+" new dot formula
+nnoremap ,x *``cgn
+nnoremap ,X #``cgN
+
+" error jumping
+nnoremap <End>  :cnext<CR>zv
+nnoremap <Home> :cprevious<CR>zv
+
+" completion
+inoremap xo <C-x><C-o>
+inoremap xf <C-x><C-f>
+inoremap xl <C-x><C-l>
+inoremap xn <C-x><C-n>
+
+" readable visual selection
+hi Visual cterm=NONE ctermbg=white ctermfg=darkblue
