@@ -23,35 +23,30 @@ set tags=./tags;,tags;
 set wildcharm=<C-z>
 set wildmenu
 set path=.,**
-set suffixesadd=.php,.html,.js,.css,.py,.sh
 
-" opening files
+" juggling with files
 nnoremap ,f :find<Space>
 nnoremap ,s :sfind<Space>
 nnoremap ,v :vert sfind<Space>
 
-" switching buffers
-nnoremap ,b :buffer <C-z>
+" juggling with buffers
+nnoremap ,b         :buffer <C-z>
 nnoremap <PageUp>   :bp<CR>
 nnoremap <PageDown> :bn<CR>
 
-" tag jumping
+" juggling with tags
 nnoremap ,t :tjump /
 nnoremap ,p :ptjump /
 nnoremap ,$ :tjump /<c-r>=expand('<cword>')<CR><CR>
 nnoremap ,* :ptjump /<c-r>=expand('<cword>')<CR><CR>
 
+" juggling with errors
+nnoremap <End>  :cnext<CR>zv
+nnoremap <Home> :cprevious<CR>zv
+
 " super quick search and replace
 nnoremap ,r :'{,'}s/\<<C-r>=expand('<cword>')<CR>\>/
 nnoremap ,R :%s/\<<C-r>=expand('<cword>')<CR>\>/
-
-" new dot formula
-nnoremap ,x *``cgn
-nnoremap ,X #``cgN
-
-" error jumping
-nnoremap <End>  :cnext<CR>zv
-nnoremap <Home> :cprevious<CR>zv
 
 " completion
 inoremap xo <C-x><C-o>
@@ -59,5 +54,5 @@ inoremap xf <C-x><C-f>
 inoremap xl <C-x><C-l>
 inoremap xn <C-x><C-n>
 
-" readable visual selection
+" readable visual selection with the default colorscheme
 hi Visual cterm=NONE ctermbg=white ctermfg=darkblue
