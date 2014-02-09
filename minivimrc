@@ -18,16 +18,16 @@ set foldmethod=indent
 set hidden
 set incsearch
 set laststatus=2
+set path=.,**
 set ruler
 set tags=./tags;,tags;
 set wildcharm=<C-z>
 set wildmenu
-set path=.,**
 
 " juggling with files
-nnoremap ,f :find<Space>
-nnoremap ,s :sfind<Space>
-nnoremap ,v :vert sfind<Space>
+nnoremap ,f :find *
+nnoremap ,s :sfind *
+nnoremap ,v :vert sfind *
 
 " juggling with buffers
 nnoremap ,b         :buffer <C-z>
@@ -35,10 +35,12 @@ nnoremap <PageUp>   :bp<CR>
 nnoremap <PageDown> :bn<CR>
 
 " juggling with tags
-nnoremap ,t :tjump /
-nnoremap ,p :ptjump /
-nnoremap ,$ :tjump /<c-r>=expand('<cword>')<CR><CR>
-nnoremap ,* :ptjump /<c-r>=expand('<cword>')<CR><CR>
+nnoremap ,t :Bombit<CR>:tjump /
+nnoremap ,p :Bombit<CR>:ptjump /
+nnoremap <C-]> :Bombit<CR><C-]>
+nnoremap <C-}> :Bombit<CR><C-}>
+autocmd FileType javascript nnoremap <buffer> <C-]> :Bombit<CR>:tjump /<c-r>=expand('<cword>')<CR><CR>
+autocmd FileType javascript nnoremap <buffer> <C-}> :Bombit<CR>:ptjump /<c-r>=expand('<cword>')<CR><CR>
 
 " juggling with errors
 nnoremap <End>  :cnext<CR>zv
@@ -49,10 +51,26 @@ nnoremap ,r :'{,'}s/\<<C-r>=expand('<cword>')<CR>\>/
 nnoremap ,R :%s/\<<C-r>=expand('<cword>')<CR>\>/
 
 " completion
-inoremap xo <C-x><C-o>
-inoremap xf <C-x><C-f>
-inoremap xl <C-x><C-l>
-inoremap xn <C-x><C-n>
+inoremap ,, <C-x><C-o>
+inoremap ,/ <C-x><C-f>
+inoremap ,- <C-x><C-l>
+inoremap ,* <C-x><C-n>
+
+" tags generation
+command! Bombit call Bombit()
+function! Bombit()
+  if executable("ctags") == 1
+    if len(tagfiles()) > 0
+      let tag = system("cd " . shellescape(fnamemodify(tagfiles()[0], ":p:h")) . " && ctags -R --tag-relative=yes --exclude=\*.min.\* -f tags .")
+
+    else
+      let tag = system("cd " . shellescape(getcwd()) . " && ctags -R --tag-relative=yes --exclude=\*.min.\* -f tags .")
+
+    endif
+
+  endif
+
+endfunction
 
 " readable visual selection with the default colorscheme
 hi Visual cterm=NONE ctermbg=white ctermfg=darkblue
