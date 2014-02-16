@@ -56,21 +56,24 @@ inoremap ,/ <C-x><C-f>
 inoremap ,- <C-x><C-l>
 inoremap ,* <C-x><C-n>
 
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "<S-Tab>"
+
 " tags generation
 command! Bombit call Bombit()
 function! Bombit()
   if executable("ctags") == 1
     if len(tagfiles()) > 0
+      update
       let tag = system("cd " . shellescape(fnamemodify(tagfiles()[0], ":p:h")) . " && ctags -R --tag-relative=yes --exclude=\*.min.\* -f tags .")
-
     else
+      update
       let tag = system("cd " . shellescape(getcwd()) . " && ctags -R --tag-relative=yes --exclude=\*.min.\* -f tags .")
-
     endif
-
   endif
-
 endfunction
 
 " readable visual selection with the default colorscheme
-hi Visual cterm=NONE ctermbg=white ctermfg=darkblue
+hi Visual       cterm=NONE ctermbg=white    ctermfg=darkblue
+hi ModeMsg      cterm=NONE ctermbg=green    ctermfg=black
+hi StatusLineNC cterm=bold ctermbg=darkgrey
