@@ -18,7 +18,7 @@ set foldmethod=indent
 set hidden
 set incsearch
 set laststatus=2
-set path=.,**
+set path=**
 set ruler
 set tags=./tags;,tags;
 set wildcharm=<C-z>
@@ -35,12 +35,15 @@ nnoremap <PageUp>   :bp<CR>
 nnoremap <PageDown> :bn<CR>
 
 " juggling with tags
-nnoremap ,t :Bombit<CR>:tjump /
-nnoremap ,p :Bombit<CR>:ptjump /
-nnoremap <C-]> :Bombit<CR><C-]>
-nnoremap <C-}> :Bombit<CR><C-}>
-autocmd FileType javascript nnoremap <buffer> <C-]> :Bombit<CR>:tjump /<c-r>=expand('<cword>')<CR><CR>
-autocmd FileType javascript nnoremap <buffer> <C-}> :Bombit<CR>:ptjump /<c-r>=expand('<cword>')<CR><CR>
+nnoremap ,t :Tagit<CR>:tjump /
+nnoremap ,p :Tagit<CR>:ptjump /
+nnoremap <C-]> :Tagit<CR><C-]>
+nnoremap <C-}> :Tagit<CR><C-}>
+augroup JS
+  autocmd!
+  autocmd FileType javascript nnoremap <buffer> <C-]> :Tagit<CR>:tjump /<c-r>=expand('<cword>')<CR><CR>
+  autocmd FileType javascript nnoremap <buffer> <C-}> :Tagit<CR>:ptjump /<c-r>=expand('<cword>')<CR><CR>
+augroup END
 
 " juggling with errors
 nnoremap <End>  :cnext<CR>zv
@@ -56,24 +59,21 @@ inoremap ,/ <C-x><C-f>
 inoremap ,- <C-x><C-l>
 inoremap ,* <C-x><C-n>
 
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "<S-Tab>"
-
 " tags generation
-command! Bombit call Bombit()
-function! Bombit()
+command! Tagit call Tagit()
+function! Tagit()
+  update
   if executable("ctags") == 1
+    let ctags_command = "ctags -R --tag-relative=yes --exclude=.git --exclude=.svn --exclude=\*.min.\* -f tags ."
     if len(tagfiles()) > 0
-      update
-      let tag = system("cd " . shellescape(fnamemodify(tagfiles()[0], ":p:h")) . " && ctags -R --tag-relative=yes --exclude=\*.min.\* -f tags .")
+      let tag = system("cd " . shellescape(fnamemodify(tagfiles()[0], ":p:h")) . " && " . ctags_command)
     else
-      update
-      let tag = system("cd " . shellescape(getcwd()) . " && ctags -R --tag-relative=yes --exclude=\*.min.\* -f tags .")
+      let tag = system("cd " . shellescape(getcwd()) . " && " . ctags_command)
     endif
   endif
 endfunction
 
-" readable visual selection with the default colorscheme
+" various adjustments of the default colorscheme
 hi Visual       cterm=NONE ctermbg=white    ctermfg=darkblue
 hi ModeMsg      cterm=NONE ctermbg=green    ctermfg=black
 hi StatusLineNC cterm=bold ctermbg=darkgrey
