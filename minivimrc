@@ -30,20 +30,13 @@ nnoremap ,s :sfind *
 nnoremap ,v :vert sfind *
 
 " juggling with buffers
-nnoremap ,b         :buffer <C-z>
-nnoremap <PageUp>   :bp<CR>
-nnoremap <PageDown> :bn<CR>
+nnoremap ,b         :buffer <C-z><S-Tab>
+nnoremap <PageUp>   :bprevious<CR>
+nnoremap <PageDown> :bnext<CR>
 
 " juggling with tags
-nnoremap ,t :Tagit<CR>:tjump /
-nnoremap ,p :Tagit<CR>:ptjump /
-nnoremap <C-]> :Tagit<CR><C-]>
-nnoremap <C-}> :Tagit<CR><C-}>
-augroup JS
-  autocmd!
-  autocmd FileType javascript nnoremap <buffer> <C-]> :Tagit<CR>:tjump /<c-r>=expand('<cword>')<CR><CR>
-  autocmd FileType javascript nnoremap <buffer> <C-}> :Tagit<CR>:ptjump /<c-r>=expand('<cword>')<CR><CR>
-augroup END
+nnoremap ,t :tjump /
+nnoremap ,p :ptjump /
 
 " juggling with errors
 nnoremap <End>  :cnext<CR>zv
@@ -58,20 +51,6 @@ inoremap ,, <C-x><C-o>
 inoremap ,/ <C-x><C-f>
 inoremap ,- <C-x><C-l>
 inoremap ,* <C-x><C-n>
-
-" tags generation
-command! Tagit call Tagit()
-function! Tagit()
-  update
-  if executable("ctags") == 1
-    let ctags_command = "ctags -R --tag-relative=yes --exclude=.git --exclude=.svn --exclude=\*.min.\* -f tags ."
-    if len(tagfiles()) > 0
-      let tag = system("cd " . shellescape(fnamemodify(tagfiles()[0], ":p:h")) . " && " . ctags_command)
-    else
-      let tag = system("cd " . shellescape(getcwd()) . " && " . ctags_command)
-    endif
-  endif
-endfunction
 
 " various adjustments of the default colorscheme
 hi Visual       cterm=NONE ctermbg=white    ctermfg=darkblue
