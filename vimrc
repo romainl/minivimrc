@@ -18,7 +18,7 @@ set foldmethod=indent
 set hidden
 set incsearch
 set laststatus=2
-set path=**
+set path=.,**
 set ruler
 set tags=./tags;,tags;
 set wildcharm=<C-z>
@@ -33,6 +33,7 @@ nnoremap ,v :vert sfind *
 nnoremap ,b         :buffer <C-z><S-Tab>
 nnoremap <PageUp>   :bprevious<CR>
 nnoremap <PageDown> :bnext<CR>
+nnoremap gb         :ls<CR>:buffer<Space>
 
 " juggling with tags
 nnoremap ,t :tjump /
@@ -47,10 +48,10 @@ nnoremap ,r :'{,'}s/\<<C-r>=expand('<cword>')<CR>\>/
 nnoremap ,R :%s/\<<C-r>=expand('<cword>')<CR>\>/
 
 " completion
-inoremap ,, <C-x><C-o>
-inoremap ,/ <C-x><C-f>
-inoremap ,- <C-x><C-l>
-inoremap ,* <C-x><C-n>
+inoremap ,, <C-x><C-o><Down><C-p><Down>
+inoremap ,; <C-p><Down><C-p><Down>
+inoremap ,: <C-x><C-f><Down><C-p><Down>
+inoremap ,= <C-x><C-l><Down><C-p><Down>
 
 " various adjustments of the default colorscheme
 hi Visual       cterm=NONE ctermbg=white    ctermfg=darkblue
