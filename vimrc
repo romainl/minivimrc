@@ -21,7 +21,6 @@ set laststatus=2
 set path=.,**
 set ruler
 set tags=./tags;,tags;
-set wildcharm=<C-z>
 set wildmenu
 
 " juggling with files
@@ -30,7 +29,6 @@ nnoremap ,s :sfind *
 nnoremap ,v :vert sfind *
 
 " juggling with buffers
-nnoremap ,b         :buffer <C-z><S-Tab>
 nnoremap <PageUp>   :bprevious<CR>
 nnoremap <PageDown> :bnext<CR>
 nnoremap gb         :ls<CR>:buffer<Space>
@@ -42,6 +40,12 @@ nnoremap ,p :ptjump /
 " juggling with errors
 nnoremap <End>  :cnext<CR>zv
 nnoremap <Home> :cprevious<CR>zv
+
+" juggling with searches
+nnoremap [I [I:
+nnoremap ,I :ilist /
+nnoremap [D [D:
+nnoremap ,D :dlist /
 
 " super quick search and replace
 nnoremap ,r :'{,'}s/\<<C-r>=expand('<cword>')<CR>\>/
