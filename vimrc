@@ -5,23 +5,29 @@
 " because -u /path/to/minivimrc
 set nocompatible
 
-" filetype support
+" filetype detection and syntax highlighting
 filetype plugin indent on
 syntax on
 
-" because % is addictive
+" it's there so let's activate it
 runtime macros/matchit.vim
 
 " various settings
+set autoindent
 set backspace=indent,eol,start
+set completeopt+=longest,menuone
 set foldmethod=indent
 set hidden
 set incsearch
 set laststatus=2
 set path=.,**
 set ruler
+set shiftround
+set smarttab
 set tags=./tags;,tags;
 set wildmenu
+set list
+set listchars=tab:\ \ 
 
 " juggling with files
 nnoremap ,f :find *
@@ -38,20 +44,22 @@ nnoremap ,t :tjump /
 nnoremap ,p :ptjump /
 
 " juggling with errors
-nnoremap <End>  :cnext<CR>zv
-nnoremap <Home> :cprevious<CR>zv
+nnoremap <End>  :cnext<CR>
+nnoremap <Home> :cprevious<CR>
 
 " juggling with searches
 nnoremap [I [I:
+xnoremap [I "vy:<C-u>let cmd = 'ilist /' . @v<bar>call histadd("cmd", cmd)<bar>execute cmd<CR>:
 nnoremap ,I :ilist /
 nnoremap [D [D:
+xnoremap [D "vy:<C-u>let cmd = 'dlist /' . @v<bar>call histadd("cmd", cmd)<bar>execute cmd<CR>:
 nnoremap ,D :dlist /
 
-" super quick search and replace
-nnoremap ,r :'{,'}s/\<<C-r>=expand('<cword>')<CR>\>/
-nnoremap ,R :%s/\<<C-r>=expand('<cword>')<CR>\>/
+" juggling with search/replace
+nnoremap <Space><Space> :'{,'}s/\<<C-r>=expand('<cword>')<CR>\>/
+nnoremap <Space>%       :%s/\<<C-r>=expand('<cword>')<CR>\>/
 
-" completion
+" juggling with completion
 inoremap ,, <C-x><C-o><Down><C-p><Down>
 inoremap ,; <C-p><Down><C-p><Down>
 inoremap ,: <C-x><C-f><Down><C-p><Down>
