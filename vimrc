@@ -20,14 +20,14 @@ set foldmethod=indent
 set hidden
 set incsearch
 set laststatus=2
+set list
+set listchars=tab:\ \ 
 set path=.,**
 set ruler
 set shiftround
 set smarttab
 set tags=./tags;,tags;
 set wildmenu
-set list
-set listchars=tab:\ \ 
 
 " juggling with files
 nnoremap ,f :find *
@@ -66,6 +66,6 @@ inoremap ,: <C-x><C-f><Down><C-p><Down>
 inoremap ,= <C-x><C-l><Down><C-p><Down>
 
 " various adjustments of the default colorscheme
-hi Visual       cterm=NONE ctermbg=white    ctermfg=darkblue
 hi ModeMsg      cterm=NONE ctermbg=green    ctermfg=black
 hi StatusLineNC cterm=bold ctermbg=darkgrey
+hi Visual       cterm=NONE ctermbg=white    ctermfg=darkblue
