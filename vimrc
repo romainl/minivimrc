@@ -5,29 +5,45 @@
 " because -u /path/to/minivimrc
 set nocompatible
 
-" filetype detection and syntax highlighting
+" filetype support
 filetype plugin indent on
 syntax on
 
-" it's there so let's activate it
+" because it is there
 runtime macros/matchit.vim
 
 " various settings
 set autoindent
 set backspace=indent,eol,start
-set completeopt+=longest,menuone
 set foldmethod=indent
 set hidden
 set incsearch
 set laststatus=2
-set list
-set listchars=tab:\ \ 
 set path=.,**
 set ruler
 set shiftround
 set smarttab
 set tags=./tags;,tags;
+set wildcharm=<C-z>
 set wildmenu
+
+" various autocommands
+augroup minivimrc
+    autocmd!
+
+    " automatic quickfix/location window
+    autocmd QuickFixCmdPost grep\|make\|grepadd\|vimgrep\|vimgrepadd\|cscope\|cfile\|cgetfile\|caddfile\|helpgrep cwindow
+    autocmd QuickFixCmdPost lgrep\|lmake\|lgrepadd\|lvimgrep\|lvimgrepadd\|lfile\|lgetfile\|laddfile lwindow
+augroup END
+
+" various adjustments of the default colorscheme
+hi Visual       cterm=NONE ctermbg=white    ctermfg=darkblue
+hi ModeMsg      cterm=NONE ctermbg=green    ctermfg=black
+hi StatusLineNC cterm=bold ctermbg=darkgrey
+
+" various commands
+command! -nargs=1 Space execute "setlocal shiftwidth=" . <args> . " softtabstop=" . <args> . " expandtab" | set shiftwidth? softtabstop? expandtab?
+command! -nargs=1 Tab   execute "setlocal shiftwidth=" . <args> . " softtabstop=" . <args> . " noexpandtab" | set shiftwidth? softtabstop? expandtab?
 
 " juggling with files
 nnoremap ,f :find *
@@ -37,35 +53,44 @@ nnoremap ,v :vert sfind *
 " juggling with buffers
 nnoremap <PageUp>   :bprevious<CR>
 nnoremap <PageDown> :bnext<CR>
-nnoremap gb         :ls<CR>:buffer<Space>
+nnoremap gb         :ls<CR>:b <C-z><S-Tab>
 
-" juggling with tags
+" juggling with tags and definitions
 nnoremap ,t :tjump /
 nnoremap ,p :ptjump /
+nnoremap ,d :dlist /
+nnoremap [D [D:
+
+" juggling with searches
+nnoremap ,i :ilist /
+nnoremap [I [I:
+
+" juggling with changes
+nnoremap ,; *``cgn
+nnoremap ,, #``cgN
 
 " juggling with errors
 nnoremap <End>  :cnext<CR>
 nnoremap <Home> :cprevious<CR>
 
-" juggling with searches
-nnoremap [I [I:
-xnoremap [I "vy:<C-u>let cmd = 'ilist /' . @v<bar>call histadd("cmd", cmd)<bar>execute cmd<CR>:
-nnoremap ,I :ilist /
-nnoremap [D [D:
-xnoremap [D "vy:<C-u>let cmd = 'dlist /' . @v<bar>call histadd("cmd", cmd)<bar>execute cmd<CR>:
-nnoremap ,D :dlist /
-
-" juggling with search/replace
+" super quick search and replace
 nnoremap <Space><Space> :'{,'}s/\<<C-r>=expand('<cword>')<CR>\>/
 nnoremap <Space>%       :%s/\<<C-r>=expand('<cword>')<CR>\>/
 
-" juggling with completion
-inoremap ,, <C-x><C-o><Down><C-p><Down>
-inoremap ,; <C-p><Down><C-p><Down>
-inoremap ,: <C-x><C-f><Down><C-p><Down>
-inoremap ,= <C-x><C-l><Down><C-p><Down>
+" smarter command-line
+cnoremap <expr> <CR>    getcmdline() =~ '\v\C(^(dli\|il\|ps))\|#$' ? "\<CR>:" : "\<CR>"
+cnoremap <expr> <Tab>   getcmdtype() == "/" ? "<CR>/<C-r>/" : getcmdtype() == "?" ? "<CR>?<C-r>/" : "<C-z>"
+cnoremap <expr> <S-Tab> getcmdtype() == "/" ? "<CR>?<C-r>/" : getcmdtype() == "?" ? "<CR>/<C-r>/" : "<S-Tab>"
 
-" various adjustments of the default colorscheme
-hi ModeMsg      cterm=NONE ctermbg=green    ctermfg=black
-hi StatusLineNC cterm=bold ctermbg=darkgrey
-hi Visual       cterm=NONE ctermbg=white    ctermfg=darkblue
+" completion
+inoremap ,, <C-x><C-o><C-r>=pumvisible() ? "\<lt>Down>\<lt>C-p>\<lt>Down>\<lt>C-p>" : ""<CR>
+inoremap ,; <C-n><C-r>=pumvisible() ? "\<lt>Down>\<lt>C-p>\<lt>Down>\<lt>C-p>" : ""<CR>
+inoremap ,: <C-x><C-f><C-r>=pumvisible() ? "\<lt>Down>\<lt>C-p>\<lt>Down>\<lt>C-p>" : ""<CR>
+inoremap ,= <C-x><C-l><C-r>=pumvisible() ? "\<lt>Down>\<lt>C-p>\<lt>Down>\<lt>C-p>" : ""<CR>
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+" brace yourself
+inoremap (<CR> (<CR>)<Esc>O
+inoremap {<CR> {<CR>}<Esc>O
+inoremap [<CR> [<CR>]<Esc>O
