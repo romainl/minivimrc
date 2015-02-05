@@ -32,8 +32,8 @@ augroup minivimrc
     autocmd!
 
     " automatic quickfix/location window
-    autocmd QuickFixCmdPost grep\|make\|grepadd\|vimgrep\|vimgrepadd\|cscope\|cfile\|cgetfile\|caddfile\|helpgrep cwindow
-    autocmd QuickFixCmdPost lgrep\|lmake\|lgrepadd\|lvimgrep\|lvimgrepadd\|lfile\|lgetfile\|laddfile lwindow
+    autocmd QuickFixCmdPost grep,make,grepadd,vimgrep,vimgrepadd,cscope,cfile,cgetfile,caddfile,helpgrep cwindow
+    autocmd QuickFixCmdPost lgrep,lmake,lgrepadd,lvimgrep,lvimgrepadd,lfile,lgetfile,laddfile lwindow
 augroup END
 
 " various adjustments of the default colorscheme
