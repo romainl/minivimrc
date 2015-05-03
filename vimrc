@@ -24,7 +24,6 @@ set ruler
 set shiftround
 set smarttab
 set tags=./tags;,tags;
-set wildcharm=<C-z>
 set wildmenu
 
 " various autocommands
@@ -53,7 +52,7 @@ nnoremap ,v :vert sfind *
 " juggling with buffers
 nnoremap <PageUp>   :bprevious<CR>
 nnoremap <PageDown> :bnext<CR>
-nnoremap gb         :ls<CR>:b <C-z><S-Tab>
+nnoremap gb         :ls<CR>:b<Space>
 
 " juggling with tags and definitions
 nnoremap ,t :tjump /
