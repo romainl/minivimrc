@@ -24,6 +24,7 @@ set ruler
 set shiftround
 set smarttab
 set tags=./tags;,tags;
+set wildcharm=<C-z>
 set wildmenu
 
 " various autocommands
