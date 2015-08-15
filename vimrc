@@ -12,7 +12,9 @@ runtime macros/matchit.vim
 " various settings
 set autoindent
 set backspace=indent,eol,start
+set foldlevelstart=999
 set foldmethod=indent
+set grepprg=grep\ -rn
 set hidden
 set incsearch
 set laststatus=2
@@ -45,6 +47,7 @@ command! -nargs=1 Tabs   execute "setlocal shiftwidth=" . <args> . " softtabstop
 nnoremap ,f :find *
 nnoremap ,s :sfind *
 nnoremap ,v :vert sfind *
+nnoremap ,t :tabfind *
 
 " juggling with buffers
 nnoremap ,b         :buffer *
@@ -52,9 +55,10 @@ nnoremap ,B         :sbuffer *
 nnoremap gb         :ls<CR>:b
 nnoremap <PageUp>   :bprevious<CR>
 nnoremap <PageDown> :bnext<CR>
+nnoremap <BS>       <C-^>
 
 " juggling with definitions
-nnoremap ,t :tjump /
+nnoremap ,j :tjump /
 nnoremap ,p :ptjump /
 nnoremap ,d :dlist /
 nnoremap [D [D:djump   <C-r><C-w><S-Left><Left>
@@ -69,7 +73,10 @@ nnoremap ]I ]I:ijump   <C-r><C-w><S-Left><Left><Left>
 nnoremap ,; *``cgn
 nnoremap ,, #``cgN
 
-" juggling with errors
+" grepping to the max
+command! -nargs=+ -complete=file_in_path -bar Grep silent! grep! <args> | redraw!
+
+" juggling with quickfix entries
 nnoremap <End>  :cnext<CR>
 nnoremap <Home> :cprevious<CR>
 
@@ -94,3 +101,4 @@ inoremap ,= <C-x><C-l><C-r>=pumvisible() ? "\<lt>Down>\<lt>C-p>\<lt>Down>\<lt>C-
 inoremap (<CR> (<CR>)<Esc>O
 inoremap {<CR> {<CR>}<Esc>O
 inoremap [<CR> [<CR>]<Esc>O
+inoremap <Space><CR> <CR><C-o>O
