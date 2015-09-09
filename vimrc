@@ -14,7 +14,7 @@ set autoindent
 set backspace=indent,eol,start
 set foldlevelstart=999
 set foldmethod=indent
-set grepprg=grep\ -rn
+set grepprg=grep\ -rnH
 set hidden
 set incsearch
 set laststatus=2
@@ -38,6 +38,7 @@ augroup END
 hi Visual       cterm=NONE ctermbg=white    ctermfg=darkblue
 hi ModeMsg      cterm=NONE ctermbg=green    ctermfg=black
 hi StatusLineNC cterm=bold ctermbg=darkgrey
+hi Search       cterm=NONE ctermbg=yellow   ctermfg=black
 
 " commands for adjusting indentation rules manually
 command! -nargs=1 Spaces execute "setlocal shiftwidth=" . <args> . " softtabstop=" . <args> . " expandtab" | set shiftwidth? softtabstop? expandtab?
@@ -101,4 +102,3 @@ inoremap ,= <C-x><C-l><C-r>=pumvisible() ? "\<lt>Down>\<lt>C-p>\<lt>Down>\<lt>C-
 inoremap (<CR> (<CR>)<Esc>O
 inoremap {<CR> {<CR>}<Esc>O
 inoremap [<CR> [<CR>]<Esc>O
-inoremap <Space><CR> <CR><C-o>O
