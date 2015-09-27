@@ -12,12 +12,14 @@ runtime macros/matchit.vim
 " various settings
 set autoindent
 set backspace=indent,eol,start
+set complete+=t,d
 set foldlevelstart=999
 set foldmethod=indent
 set grepprg=grep\ -rn
 set hidden
 set incsearch
 set laststatus=2
+set mouse=a
 set path=.,**
 set ruler
 set shiftround
@@ -30,6 +32,7 @@ set wildmode=full
 " various autocommands
 augroup minivimrc
     autocmd!
+    " automatic location/quickfix window
     autocmd QuickFixCmdPost [^l]* cwindow
     autocmd QuickFixCmdPost    l* lwindow
 augroup END
@@ -52,7 +55,6 @@ nnoremap ,t :tabfind *
 " juggling with buffers
 nnoremap ,b         :buffer *
 nnoremap ,B         :sbuffer *
-nnoremap gb         :ls<CR>:b
 nnoremap <PageUp>   :bprevious<CR>
 nnoremap <PageDown> :bnext<CR>
 nnoremap <BS>       <C-^>
@@ -73,7 +75,7 @@ nnoremap ]I ]I:ijump   <C-r><C-w><S-Left><Left><Left>
 nnoremap ,; *``cgn
 nnoremap ,, #``cgN
 
-" grepping to the max
+" smooth greppin'
 command! -nargs=+ -complete=file_in_path -bar Grep silent! grep! <args> | redraw!
 
 " juggling with quickfix entries
@@ -81,19 +83,31 @@ nnoremap <End>  :cnext<CR>
 nnoremap <Home> :cprevious<CR>
 
 " super quick search and replace
-nnoremap <Space><Space> :'{,'}s/\<<C-r>=expand('<cword>')<CR>\>/
-nnoremap <Space>%       :%s/\<<C-r>=expand('<cword>')<CR>\>/
+nnoremap <Space><Space> :'{,'}s/\<<C-r>=expand("<cword>")<CR>\>/
+nnoremap <Space>%       :%s/\<<C-r>=expand("<cword>")<CR>\>/
 
 " smarter command-line
-cnoremap <expr> <CR>    getcmdline() =~ '\v\C(^(ls\|dli\|il\|cli\|lli))\|/#$' ? "\<CR>:" : "\<CR>"
 cnoremap <expr> <Tab>   getcmdtype() == "/" \|\| getcmdtype() == "?" ? "<CR>/<C-r>/" : "<C-z>"
 cnoremap <expr> <S-Tab> getcmdtype() == "/" \|\| getcmdtype() == "?" ? "<CR>?<C-r>/" : "<S-Tab>"
+
+" smoother listing
+cnoremap <expr> <CR>    CCR()
+function! CCR()
+    if getcmdtype() == ":"
+        let cmdline = getcmdline()
+            if cmdline =~ '\v^(dli|il)' | return "\<CR>:" . cmdline[0] . "jump  " . split(cmdline, " ")[1] . "\<S-Left>\<Left>"
+        elseif cmdline =~ '\v^(cli|lli)' | return "\<CR>:silent " . repeat(cmdline[0], 2) . "\<Space>"
+        elseif cmdline =~ '^old' | return "\<CR>:edit #<"
+        elseif cmdline =~ '^ls' | return "\<CR>:b"
+        elseif cmdline =~ '/#$' | return "\<CR>:"
+        else | return "\<CR>" | endif
+    else | return "\<CR>" | endif
+endfunction
 
 " better completion menu
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap ,, <C-x><C-o><C-r>=pumvisible() ? "\<lt>Down>\<lt>C-p>\<lt>Down>\<lt>C-p>" : ""<CR>
-inoremap ,; <C-n><C-r>=pumvisible() ? "\<lt>Down>\<lt>C-p>\<lt>Down>\<lt>C-p>" : ""<CR>
+inoremap ,, <C-n><C-r>=pumvisible() ? "\<lt>Down>\<lt>C-p>\<lt>Down>\<lt>C-p>" : ""<CR>
 inoremap ,: <C-x><C-f><C-r>=pumvisible() ? "\<lt>Down>\<lt>C-p>\<lt>Down>\<lt>C-p>" : ""<CR>
 inoremap ,= <C-x><C-l><C-r>=pumvisible() ? "\<lt>Down>\<lt>C-p>\<lt>Down>\<lt>C-p>" : ""<CR>
 
@@ -101,4 +115,3 @@ inoremap ,= <C-x><C-l><C-r>=pumvisible() ? "\<lt>Down>\<lt>C-p>\<lt>Down>\<lt>C-
 inoremap (<CR> (<CR>)<Esc>O
 inoremap {<CR> {<CR>}<Esc>O
 inoremap [<CR> [<CR>]<Esc>O
-inoremap <Space><CR> <CR><C-o>O
