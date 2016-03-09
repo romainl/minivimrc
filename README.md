@@ -15,11 +15,15 @@ This **minivimrc** started its life as a very small `vimrc` I put together while
 * mappings for juggling with buffers
 * mappings for juggling with definitions (definition-search, tags)
 * mappings for juggling with matches (include-search)
-* mappings for smoothing out search and replace
-* a more useful :Grep command
 * mappings for juggling with quickfix entries
-* mappings for a better command-line
+* mappings for smoothing out search and replace
 * mappings for smoothing out the use of list-like commands
+* mappings for a better command-line
 * mappings for a more intuitive completion menu
+* a more useful :Grep command
 * simplistic brace expansion
 * small colorscheme tweaks
+
+## Bonus
+
+There are also some JavaScript-oriented settings at the bottom. They are largely unnecessary if you don't write JavaScript.

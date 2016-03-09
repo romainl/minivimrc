@@ -26,7 +26,7 @@ hi Search       cterm=NONE ctermbg=yellow   ctermfg=black
 hi StatusLineNC cterm=bold ctermbg=darkgrey
 hi Visual       cterm=NONE ctermbg=white    ctermfg=darkblue
 
-" NANOVIMRC + MICROVIMRC + ... = MINIVIMRC
+" MICROVIMRC + ... = MINIVIMRC
 
 " more various settings
 set complete+=d
@@ -63,8 +63,8 @@ nnoremap ,v :vert sfind *
 nnoremap ,t :tabfind *
 
 " juggling with buffers
-nnoremap ,b	 :buffer *
-nnoremap ,B	 :sbuffer *
+nnoremap ,b         :buffer *
+nnoremap ,B         :sbuffer *
 nnoremap <PageUp>   :bprevious<CR>
 nnoremap <PageDown> :bnext<CR>
 nnoremap <BS>       <C-^>
