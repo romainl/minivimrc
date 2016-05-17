@@ -1,5 +1,3 @@
-" NANOVIMRC
-
 " various settings
 set autoindent
 set backspace=indent,eol,start
@@ -11,7 +9,7 @@ set shiftround
 set smarttab
 set wildmenu
 
-" NANOVIMRC + ... = MICROVIMRC
+" = NANOVIMRC
 
 " filetype support
 filetype plugin indent on
@@ -26,13 +24,13 @@ hi Search       cterm=NONE ctermbg=yellow   ctermfg=black
 hi StatusLineNC cterm=bold ctermbg=darkgrey
 hi Visual       cterm=NONE ctermbg=white    ctermfg=darkblue
 
-" MICROVIMRC + ... = MINIVIMRC
+" NANOVIMRC + ... = MICROVIMRC
 
 " more various settings
 set complete+=d
 set foldlevelstart=999
 set foldmethod=indent
-set grepprg=grep\ -nrsH
+set grepprg=LC_ALL=C\ grep\ -nrsH
 set mouse=a
 set noswapfile
 set shiftwidth=0
@@ -50,8 +48,8 @@ augroup minivimrc
 augroup END
 
 " commands for adjusting indentation rules manually
-command! -nargs=1 Spaces execute "setlocal shiftwidth=" . <args> . " softtabstop=" . <args> . " expandtab" | set shiftwidth? softtabstop? expandtab?
-command! -nargs=1 Tabs   execute "setlocal shiftwidth=" . <args> . " softtabstop=" . <args> . " noexpandtab" | set shiftwidth? softtabstop? expandtab?
+command! -nargs=1 Spaces execute "setlocal shiftwidth=" . <args> . " softtabstop=" . <args> . " expandtab" | setlocal shiftwidth? softtabstop? expandtab?
+command! -nargs=1 Tabs   execute "setlocal shiftwidth=" . <args> . " softtabstop=" . <args> . " noexpandtab" | setlocal shiftwidth? softtabstop? expandtab?
 
 " juggling with jumps
 nnoremap ' `
@@ -119,27 +117,40 @@ inoremap [<CR> [<CR>]<Esc>O
 inoremap [; [<CR>];<Esc>O
 inoremap [, [<CR>],<Esc>O
 
-" JavaScript
-augroup JS
-	autocmd!
-	autocmd FileType javascript call <SID>JavaScriptSetup()
-augroup END
-
-" functions
-function! s:JavaScriptSetup()
-	setlocal include=^\\s*\\([^\/]\\{-\\}import[^'\"]*\\\|[^\/]\\{-\\}require\(\\)*['\"]\\zs[^'\"]*\\ze
-	setlocal suffixesadd+=.js
-	setlocal define=^\\s*\\(var\\\|let\\\|function\\\|define\\)[('\"]\\{-\\}
-endfunction
-
 function! s:CCR()
 	if getcmdtype() == ":"
 		let cmdline = getcmdline()
-		    if cmdline =~ '\v\C^(dli|il)'  | return "\<CR>:" . cmdline[0] . "jump  " . split(cmdline, " ")[1] . "\<S-Left>\<Left>"
+		    if cmdline =~ '\v\C^(dli|il)' | return "\<CR>:" . cmdline[0] . "jump  " . split(cmdline, " ")[1] . "\<S-Left>\<Left>"
 		elseif cmdline =~ '\v\C^(cli|lli)' | return "\<CR>:silent " . repeat(cmdline[0], 2) . "\<Space>"
-		elseif cmdline =~ '\C^old' | return "\<CR>:edit #<"
+		elseif cmdline =~ '\C^changes' | set nomore | return "\<CR>:sil se more|norm! g;\<S-Left>"
+		elseif cmdline =~ '\C^ju' | set nomore | return "\<CR>:sil se more|norm! \<C-o>\<S-Left>"
+		elseif cmdline =~ '\C^old' | set nomore | return "\<CR>:sil se more|e #<"
+		elseif cmdline =~ '\C^undol' | return "\<CR>:u "
 		elseif cmdline =~ '\C^ls' | return "\<CR>:b"
 		elseif cmdline =~ '/#$' | return "\<CR>:"
 		else | return "\<CR>" | endif
 	else | return "\<CR>" | endif
 endfunction
+
+" JavaScript
+augroup JS
+	autocmd!
+	autocmd FileType javascript call <SID>JavaScriptSetup()
+augroup END
+function! s:JavaScriptSetup()
+	setlocal define=^\\s*\\ze[^/,\\":=]*\\s*[:=]*\\s*\\(function\\\|define\\)[('\"]\\{-\\}
+	setlocal include=^\\s*\\([^\/]\\{-\\}import[^'\"]*\\\|[^\/]\\{-\\}require\(\\)*['\"]\\zs[^'\"]*\\ze
+	setlocal suffixesadd+=.js
+endfunction
+
+" Git
+augroup Git
+	autocmd!
+	autocmd FileType gitcommit call <SID>GitSetup()
+augroup END
+function! s:GitSetup()
+	nnoremap <buffer> { ?^@@<CR>
+	nnoremap <buffer> } /^@@<CR>
+endfunction
+
+" MICROVIMRC + ... = MINIVIMRC
