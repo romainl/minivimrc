@@ -24,8 +24,7 @@ set hidden
 set incsearch
 set mouse=a
 set noswapfile
-set path&
-let &path .= "**"
+set path&|let &path .= "**"
 set ruler
 set shiftround
 set shiftwidth=0
@@ -45,8 +44,8 @@ augroup minivimrc
 augroup END
 
 " commands for adjusting indentation rules manually
-command! -nargs=1 Spaces execute "setlocal shiftwidth=" . <args> . " softtabstop=" . <args> . " expandtab" | setlocal sw? sts? et?
-command! -nargs=1 Tabs   execute "setlocal shiftwidth=" . <args> . " softtabstop=" . <args> . " noexpandtab" | setlocal sw? sts? et?
+command! -nargs=1 Spaces execute "setlocal tabstop=" . <args> . " shiftwidth=" . <args> . " softtabstop=" . <args> . " expandtab" | setlocal ts? sw? sts? et?
+command! -nargs=1 Tabs   execute "setlocal tabstop=" . <args> . " shiftwidth=" . <args> . " softtabstop=" . <args> . " noexpandtab" | setlocal ts? sw? sts? et?
 
 " juggling with jumps
 nnoremap ' `
@@ -108,14 +107,6 @@ inoremap [<CR> [<CR>]<Esc>O
 inoremap [;    [<CR>];<Esc>O
 inoremap [,    [<CR>],<Esc>O
 
-" pair completion on the cheap
-inoremap "" ""<Left>
-inoremap '' ''<Left>
-inoremap `` ``<Left>
-inoremap (( ()<Left>
-inoremap {{ {}<Left>
-inoremap [[ []<Left>
-
 " smooth grepping
 command! -nargs=+ -complete=file_in_path -bar Grep silent! grep! <args> | redraw!
 
@@ -134,7 +125,7 @@ function! s:CCR()
 		elseif cmdline =~ '\v\C^(cli|lli)' | return "\<CR>:silent " . repeat(cmdline[0], 2) . "\<Space>"
 		elseif cmdline =~ '\C^changes' | set nomore | return "\<CR>:Z|norm! g;\<S-Left>"
 		elseif cmdline =~ '\C^ju' | set nomore | return "\<CR>:Z|norm! \<C-o>\<S-Left>"
-                elseif cmdline =~ '\v\C(#|nu|num|numb|numbe|number)$' | return "\<CR>:"
+		elseif cmdline =~ '\v\C(#|nu|num|numb|numbe|number)$' | return "\<CR>:"
 		elseif cmdline =~ '\C^ol' | set nomore | return "\<CR>:Z|e #<"
 		elseif cmdline =~ '\v\C^(ls|files|buffers)' | return "\<CR>:b"
 		elseif cmdline =~ '\C^marks' | return "\<CR>:norm! `"
