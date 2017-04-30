@@ -7,12 +7,6 @@ syntax on
 " because it's there
 runtime macros/matchit.vim
 
-" various adjustments of the default colorscheme
-hi ModeMsg      cterm=NONE ctermbg=green    ctermfg=black
-hi Search       cterm=NONE ctermbg=yellow   ctermfg=black
-hi StatusLineNC cterm=bold ctermbg=darkgrey
-hi Visual       cterm=NONE ctermbg=white    ctermfg=darkblue
-
 " various settings
 set autoindent
 set backspace=indent,eol,start
@@ -24,7 +18,7 @@ set hidden
 set incsearch
 set mouse=a
 set noswapfile
-set path&|let &path .= "**"
+set path& | let &path .= "**"
 set ruler
 set shiftround
 set shiftwidth=0
@@ -41,6 +35,13 @@ augroup minivimrc
 	autocmd QuickFixCmdPost [^l]* cwindow
 	autocmd QuickFixCmdPost    l* lwindow
 	autocmd VimEnter            * cwindow
+	" various adjustments of the default colorscheme
+	autocmd ColorScheme * hi ModeMsg      cterm=NONE ctermbg=green    ctermfg=black
+			    \ hi Search       cterm=NONE ctermbg=yellow   ctermfg=black
+			    \ hi StatusLineNC cterm=bold ctermbg=darkgrey
+			    \ hi Visual       cterm=NONE ctermbg=white    ctermfg=darkblue
+	" Git-specific mappings
+	autocmd FileType gitcommit nnoremap <buffer> { ?^@@<CR>|nnoremap <buffer> } /^@@<CR>
 augroup END
 
 " commands for adjusting indentation rules manually
@@ -133,6 +134,3 @@ function! s:CCR()
 		else | return "\<CR>" | endif
 	else | return "\<CR>" | endif
 endfunction
-
-" Git-specific settings
-autocmd minivimrc FileType gitcommit nnoremap <buffer> { ?^@@<CR>|nnoremap <buffer> } /^@@<CR>
