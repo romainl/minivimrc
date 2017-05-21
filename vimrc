@@ -41,7 +41,7 @@ augroup minivimrc
 			    \ hi StatusLineNC cterm=bold ctermbg=darkgrey
 			    \ hi Visual       cterm=NONE ctermbg=white    ctermfg=darkblue
 	" Git-specific mappings
-	autocmd FileType gitcommit nnoremap <buffer> { ?^@@<CR>|nnoremap <buffer> } /^@@<CR>
+	autocmd FileType gitcommit nnoremap <buffer> { ?^@@<CR>|nnoremap <buffer> } /^@@<CR>|setlocal iskeyword+=-
 augroup END
 
 " commands for adjusting indentation rules manually
@@ -117,7 +117,6 @@ cnoremap <expr> <S-Tab> getcmdtype() == "/" \|\| getcmdtype() == "?" ? "<CR>?<C-
 
 " smooth listing
 cnoremap <expr> <CR> <SID>CCR()
-
 function! s:CCR()
 	command! -bar Z silent set more|delcommand Z
 	if getcmdtype() == ":"
