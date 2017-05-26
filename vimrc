@@ -40,7 +40,7 @@ augroup minivimrc
 			    \ hi Search       cterm=NONE ctermbg=yellow   ctermfg=black
 			    \ hi StatusLineNC cterm=bold ctermbg=darkgrey
 			    \ hi Visual       cterm=NONE ctermbg=white    ctermfg=darkblue
-	" Git-specific mappings
+	" Git-specific settings
 	autocmd FileType gitcommit nnoremap <buffer> { ?^@@<CR>|nnoremap <buffer> } /^@@<CR>|setlocal iskeyword+=-
 augroup END
 
